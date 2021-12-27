@@ -1,0 +1,180 @@
+<html>
+	<head>
+		<title>	
+			Polybios
+		</title>
+		<style type="text/css">
+			body{
+				padding: 20px;
+				height: 500px;
+				width: 80%;
+				background-color: #efe6fa;/*#cdcffa;*/
+				margin:25px; 
+				margin-bottom:50px; 
+				color: #003aa6;
+				font-size: 22px;
+			}
+		</style>
+	</head>
+	<body align="center">
+		Introduceti textul ce urmeaza a fi criptat:
+		<input type="text" id="txt">
+		<input type="button" value="Random key" onclick="rand();">
+		<input type="button" value="Constant key" onclick="constant();">
+		<div id="content">
+		</div>
+		<script>
+			function chr(ord) {
+				return String.fromCharCode(ord);
+			}
+			
+			function containsElement(arr, element) {
+				for (let i = 0;i < arr.length; i++) {
+					if (arr[i] === element) {
+						return false;
+					}
+				}
+				return true;
+			}
+			
+			const rs = document.getElementById("content");
+
+			let a = [[null, null, null, null, null, null],
+					[null, null, null, null, null, null],
+					[null, null, null, null, null, null],
+					[null, null, null, null, null, null],
+					[null, null, null, null, null, null],
+					[null, null, null, null, null, null]];
+
+		function constant() {
+			a = [[null, "C", "R", "I", "P", "T"],
+				["A", "A", "F", "O", "S", "T"],
+				["E", "D", "U", "C", "I", "N"],
+				["D", "P", "V", "E", "M", "R"],
+				["2", "B", "G", "H", "J", "K"],
+				["7", "L", "W", "X", "Y", "Z"]];
+			main();
+		}
+
+		function rand() {	
+			let exterior = new Array(); 
+			
+			/*console.log(a);
+			for (let i = 0;i < a.length; i++){
+				for (let j = 0;j < a[i].length; j++) {
+					console.log(a[i][j]);
+				}
+			}*/
+			
+
+			for (let i = 0;i < 10; i++) {
+				let elementToAdd = 	Math.round(Math.random()*(255 - 1) + 1);
+				if (i == 0) {
+					exterior.push(elementToAdd)
+				} else {
+					while (containsElement(exterior,elementToAdd) === false) {
+						elementToAdd = Math.round(Math.random()*(255 - 1) + 1);
+					}
+					exterior.push(elementToAdd);
+				}
+			}
+			
+			console.log(exterior);
+			
+			let counter = 0;
+			for (let i = 0;i < a.length; i++) {
+				for (let j = 0;j < a[i].length; j++){
+					if (i + j == 0) {
+						continue;
+					} else if (i == 0 || j == 0) {
+						a[i][j] = chr(exterior[counter]);
+						counter++;
+					}
+				}
+			}
+			counter = 0;
+			let interior = new Array();
+			for (let i = 0;i < 25; i++) {
+				let elementToAdd = Math.round(Math.random()*(90 - 65) + 65);
+				if (i == 0) {
+					interior.push(elementToAdd);
+				} else {
+					while (containsElement(interior,elementToAdd) === false || elementToAdd === 81) {
+						elementToAdd = Math.round(Math.random()*(90 - 65) + 65);
+					}interior.push(elementToAdd);
+				}
+			}
+			console.log(interior);
+			for (let i = 0;i < a.length; i++) {
+				for (let j = 0;j < a[i].length; j++){
+					if (i != 0 && j != 0) {
+						a[i][j] = chr(interior[counter]);
+						counter++;
+					}
+				}
+			}	
+			main();
+		}
+
+		function main() {	
+			rs.innerHTML = "";
+			let str = document.getElementById("txt").value.toUpperCase();
+			let textCript = "";
+			for (let i = 0;i < str.length; i++) {
+				let i_index = 0;
+				let j_index = 0;
+				let ch = str.charAt(i);
+				for (let i = 1;i < a.length; i++) {
+					for (let j = 1;j < a[i].length; j++) {
+						if (a[i][j] == ch) {
+							i_index = i;
+							j_index = j;
+						}
+					}
+				}
+				textCript += a[i_index][0] + a[0][j_index];
+			}
+
+			let textDecript = "";
+			if (textCript.length % 2 != 0) {
+				textDecript = "Eroare! Textul criptat nu poate fi decriptat";
+			} else {
+				for (let i = 0;i < textCript.length - 1; i += 2) {
+					let ch1 = textCript.charAt(i);
+					let ch2 = textCript.charAt(i + 1);
+					let i_index = 0;
+					let j_index = 0;
+					for (let i = 1;i <= 5; i++) {
+						if (a[i][0] == ch1 || a[i][0] == ch2) {
+							i_index = i;
+							break;
+						}
+					}
+					for (let j = 1;j <= 5; j++) {
+						if (a[0][j] == ch1 || a[0][j] == ch2) {
+							j_index = j;
+							break;
+						}
+					}
+					textDecript += a[i_index][j_index];
+				}
+			}
+
+
+			let htmlTable = "<table border=\"2\" width=\"500\" height=\"500\" align=\"center\">";
+			for (let i = 0;i < a.length; i++) {
+				htmlTable += "<tr align=\"center\">";
+				for (let j = 0;j < a[i].length; j++) {
+					htmlTable += "<td>" + String(a[i][j]) + "</td>";
+				}
+				htmlTable += "</tr>";
+			}
+			htmlTable += "</table>";
+			rs.innerHTML += htmlTable;
+			rs.innerHTML += "</br>Textul introdus este: " + str + "</br>";
+			rs.innerHTML += "Textul criptat este: " + textCript + "</br>";
+			rs.innerHTML += "Textul decriptat este: " + textDecript + "</br>";
+		}
+		</script>
+	</body>
+</html>

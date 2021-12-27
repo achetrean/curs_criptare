@@ -1,0 +1,147 @@
+<html>
+	<head>
+		<title>
+			Inversa
+		</title>
+		<style>
+			.button {
+				border-radius : 15px;
+				background-color : cyan;
+				color : yello;
+				height : 35px;
+				width : 80px;
+			}
+			.content{
+				border-radius: 20px;
+				padding: 20px;
+				height: 500px;
+				width: 80%;
+				background-color: #efe6fa;/*#cdcffa;*/
+				box-shadow: -10px 20px 20px  #52d6fa;
+				margin:25px; 
+				margin-bottom:50px; 
+				color: #003aa6;
+				font-size: 22px;
+			}
+			.result {
+				color: orange;
+			}
+			body{
+				background-color: #d9faf9;
+				margin: 0;
+				padding: 0;
+				align-items: center;
+			}
+			.parentDiv{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="parentDiv">
+			<div id="content" class="content">
+				<input type="text" placeholder="n=" id="c1">
+				<input type="button" class="button" onclick="main()" value="Cripteaza">
+			</div>
+		</div>
+		<script>
+			const rs = document.getElementById("content");
+			
+			let alfabet = new Array();
+			
+			function chr(ord) {
+				return String.fromCharCode(ord);
+			}
+			
+			function ord(chr) {
+				return chr.charCodeAt(0);
+			}
+			
+			function init() {
+				for (let i = 65;i <= 90; i++) {
+					alfabet.push(chr(i));
+				}
+			}
+			
+			function main() {
+				init();
+				let n = parseInt(document.getElementById("c1").value);
+				let arrA = new Array();
+				for (let i = 1;i <= n; i++) {
+					if (n % i == 0 || i % 2 == 0) {
+						continue;
+					} else {
+						arrA.push(i);
+					}
+				}
+				let a = parseInt(window.prompt("Alegeti o valoare pentru a din urmatoarele valori: " + arrA)); 
+				rs.innerHTML = "";
+				let b = parseInt(window.prompt("Alegeti o valoare pentru b din intervalul (1:" + n +")"));
+				let n0 = n;
+				let a0 = a;
+				let t0 = 0;
+				let t = 1;
+				let q = Math.trunc(n0 / b);
+				let r = n0 - q * b;
+				while (r > 0) {
+					let temp = t0 - q * t;
+					if (temp >= 0) {
+						temp = temp % n;
+					} else {
+						temp = n - ((0 - temp) % n);
+					}
+					n0 = a0;
+					a0 = r;
+					t0 = t;
+					t = temp;
+					q = Math.trunc(n0 / a0);
+					r = n0 - q * a0;
+				}
+				let str = String(window.prompt("Introduceti un text pentru a fi criptat: "));
+				let criptText = "";
+				let decrText = "";
+				for (let i = 0;i < str.length; i++) {
+					let Ek = 0;
+					let Im = -1;
+					let ch = str.charAt(i);
+					for (let j = 0;j <= alfabet.length; j++) {
+						if (ch === alfabet[j]) {
+							Im = j;
+						}
+					}
+					Ek = (a * Im + b) % n;
+					criptText += alfabet[Ek];
+				}
+				if (a0 != 1) {
+					decrText = "Numarul " + a + " nu are invers in inelul de " + n + " numere";
+				} else {
+					for (let i = 0;i < criptText.length; i++) {
+						let Dk = 0;
+						let Im = -1;
+						let ch = criptText.charAt(i);
+						for (let j = 0;j <= alfabet.length; j++) {
+							if (ch === alfabet[j]) {
+								Im = j;
+							}
+						}
+						console.log('Im:' + Im);
+						//(t1*n_o[i]+((t1*(27-b2)) mod 27)) mod 27
+						Dk = (t * Im + t * (n - b)) % n;
+						//Dk = (t * Im + ((t * (n - b)) % n)) % n;
+						console.log('Dk: ' + Dk);
+						decrText += alfabet[Dk];
+					}	
+				}
+				rs.innerHTML += "n=" + n + "</br>";
+				rs.innerHTML += "Variantele posibile pentru numarul a: " + arrA + "</br>";
+				rs.innerHTML += "a=" + a + "</br>";
+				rs.innerHTML += "b=" + b + "</br>";
+				rs.innerHTML += "Textul introdus pentru a fi criptat: " + str + "</br>";
+				rs.innerHTML += "Textul criptat: " + criptText + "</br>";
+				rs.innerHTML += "Textul decriptat: " + decrText + "</br>";
+			}
+		</script>
+	</body>
+</html>

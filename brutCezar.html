@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.parentDiv{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.content{
+			border-radius: 20px;
+			padding: 20px;
+			height: 700px;
+			width: 80%;
+			background-color: #efe6fa;/*#cdcffa;*/
+			box-shadow: -10px 20px 20px  #52d6fa;
+			margin:25px; 
+			margin-bottom:50px; 
+			color: #003aa6;
+			font-size: 22px;
+		}
+		body{
+			background-color: #d9faf9;
+			margin: 0;
+			padding: 0;
+			align-items: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="parentDiv">
+		<div id = "content" class="content">
+		</div>
+	</div>
+	<script type="text/javascript">
+		function chr(ord) {
+    		return String.fromCharCode(ord);
+		}
+		function ord(chr) {
+    		return chr.charCodeAt(0);
+    	}
+		const rs = document.getElementById("content");
+		let str = window.prompt("Introdu textul criptat: ");
+		for (let k = 0;k <= 25; k++) {
+			rs.innerHTML += "k = " + k;
+			let t = "";
+			for (let i = 0;i < str.length; i++) {
+				let a = ord(str.charAt(i)) - 65;
+				let q = a - k;
+				q = q < 0 ? q + 26 : q;
+				t += chr((q % 26) + 97);
+			}
+			rs.innerHTML += " " + t + "</br>";
+		}
+	</script>
+</body>
+</html>

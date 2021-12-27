@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style type="text/css">
+		.content{
+			border-radius: 20px;
+			padding: 20px;
+			height: 500px;
+			width: 80%;
+			background-color: #efe6fa;/*#cdcffa;*/
+			box-shadow: -10px 20px 20px  #52d6fa;
+			margin:25px; 
+			margin-bottom:50px; 
+			color: #003aa6;
+			font-size: 22px;
+		}
+		.result {
+			color: orange;
+		}
+		body{
+			background-color: #d9faf9;
+			margin: 0;
+			padding: 0;
+			align-items: center;
+		}
+		.parentDiv{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="parentDiv">
+		<div id = "content" class="content">
+		
+		</div>
+	</div>
+	<script type="text/javascript">
+		
+		function chr(ord) {
+    		return String.fromCharCode(ord);
+		}
+		
+		function ord(chr) {
+    		return chr.charCodeAt(0);
+    	}
+    	
+    	const rs = document.getElementById("content");
+		
+		let keya = 0;
+		let keya_d = 0;
+		
+		let s = "";
+		let tc = "";
+		
+		let alfabet = new Array();
+		let n_o = new Array();
+		let c = new Array();
+
+		let ord1 = new Array();
+		let ord2 = new Array();
+
+		let f = new String("ANDREICHETREAN");
+		let g = new String();
+		let f1 = new String();
+		
+		function init() {
+			for (let i = 65;i <= 90; i++) {
+				alfabet.push(chr(i));
+			}
+		}
+		function numar_ordine(s1) {
+			let k = s1.length;
+			for (let i = 0;i < k; i++) {
+				for (let j = 0;j <= 25; j++){
+					if (s1.charAt(i) == alfabet[j]) {
+						n_o[i] = j;	
+					}
+				}
+				rs.innerHTML += "<b><i>" + n_o[i] + "</b></i> ";
+			}
+		}
+
+		function cript() {
+			let k = s.length;
+			for (let i = 0;i < k; i++) {
+				c.push((n_o[i] + keya) % 26);
+			}
+			tc = "";
+			for (let i = 0;i < k; i++) 
+				for (let j = 0;j <= 25; j++) 
+					if (c[i] == j) 
+						tc = tc + alfabet[j];
+			g += tc;
+		}
+
+		function decript() {
+			c = [];
+			let k = tc.length;
+			for (let i = 0;i < k; i++) {
+				c.push((n_o[i] + keya_d) % 26);
+			}
+			tc = "";
+			for (let i = 0;i < k; i++) 
+				for (let j = 0;j <= 25; j++) 
+					if (c[i] == j) 
+						tc = tc + alfabet[j];	
+			f1 += tc;
+		}
+
+		function main() {
+			rs.innerHTML = "";
+			keya = parseInt(window.prompt("Introduceti cheia: "));
+			rs.innerHTML += "Textul spre criptare:</br><div class=\"result\">" + f + "</div>";
+			rs.innerHTML += "Numerele de ordine ale caracterelor din textul introdus conform poziției în alfabetul de criptare: </br>";
+			init();
+			s = f;
+			numar_ordine(s);
+			cript();
+			rs.innerHTML += "</br>Textul criptat:</br><div class=\"result\">" + g + "</div>";
+			
+			//decriptarea
+			rs.innerHTML += "Numerele de ordine ale caracterelor din textul criptat conform poziției în alfabetul de decriptare: </br>";
+			keya_d = 26 - keya;
+			tc = g;
+			numar_ordine(tc);
+			decript();
+			
+			rs.innerHTML += "</br>Textul decriptat:</br><div class=\"result\">" + f1 + "</div>";
+		}
+		main();
+	</script>
+</body>
+</html>
